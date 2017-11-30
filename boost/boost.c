@@ -32,7 +32,7 @@ int main(void) {
     float current = 0;
     float power   = 0;
 
-    float lastPower   = 0
+    float lastPower   = 0;
     float lastVoltage = 0;
     float lastCurrent = 0;
     int conversion = 3.6/1024;
