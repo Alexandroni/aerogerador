@@ -28,16 +28,15 @@ int main(void) {
     //Config Timer A
     ADC10CTL0 = SREF_0 + ADC10SHT_3 + ADC10ON + ADC10IE + MSC;
 
-    int voltage = 0;
-    int current = 0;
-    int power   = 0;
+    float voltage = 0;
+    float current = 0;
+    float power   = 0;
 
-    int lastPower   = 0
-    int lastVoltage = 0;
-    int lastCurrent = 0;
+    float lastPower   = 0
+    float lastVoltage = 0;
+    float lastCurrent = 0;
+    int conversion = 3.6/1024;
 
-
-    int increase = 1;
     //Loop
     while(1){
         //ADC 1
@@ -49,7 +48,9 @@ int main(void) {
         //read and print the value
         ADC10CTL0 &= ~ENC;
         voltage     = ADC10MEM;
-
+        //convert Voltage
+        voltage = voltage*0.00596;
+        voltage = voltage*conversion;
 
         //ADC 2
         ADC10AE0  |= BIT5;                           
@@ -60,12 +61,15 @@ int main(void) {
         //read and print the value
         ADC10CTL0 &= ~ENC;
         current     = ADC10MEM;
+        //convert current
+        current = (current*2.5468 + 0.955);
+        current = current*conversion;
 
 
         //MPPT
         //low current condition <<<<-------------------------
         if (current < 1){
-            current = 1;
+            current = 0.01;
         }
 
         //Power
