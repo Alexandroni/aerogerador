@@ -25,8 +25,8 @@ int main(void) {
    P2SEL |= BIT1;
 
    //Timer A
-   TACCR0  = 60;      //period
-   TA1CCR0  = 60;      //period
+   TACCR0  = 70;      //period
+   TA1CCR0  = 70;      //period
    TACCTL1 = OUTMOD_7;
    TA1CCTL1 = OUTMOD_7;
    TACCR1  = 0;        // duty cycle
@@ -45,18 +45,16 @@ while(1){
    ADC10CTL0 |= ENC + ADC10SC;
    while((ADC10CTL0 & ADC10IFG)==0);
 
-   //PWM Adjust  
-   if(ADC10MEM>840) ADC10MEM=840;
-
-   if(ADC10MEM < 420)
+   //set PWM by voltage AC sensor value
+   if(ADC10MEM < 465)
    {
-      FT = ((840 - ADC10MEM) - 420)/6;
-      TACCR1 = 0;     // Read ADC Value
-      TA1CCR1 = FT;     // Read ADC Value
+      FT = ((930 - ADC10MEM) - 465)/6;
+      TACCR1 = 0;     
+      TA1CCR1 = FT;   
     }
     else
     {
-      FT = ((ADC10MEM) - 420)/6;
+      FT = ((ADC10MEM) - 465)/6;
       TA1CCR1 = 0;
       TACCR1 = FT;
     }
